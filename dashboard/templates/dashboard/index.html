@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Dashboard {% endblock %} 
+
+{% block content %}
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">My Items:</h2>
+
+        <div class="grid grid-cols-4 gap-6">
+            {% for item in items %}
+                <div class="rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300 ease-in-out">
+                    <a href="{% url 'item:detail' item.id %}">
+                        <div class="w-80 h-80">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" class="w-full h-full object-cover" alt="{{ item.name }}">
+                            {% else %}
+                                <div class="bg-gray-300 flex items-center justify-center h-full">
+                                    <span class="text-gray-500">No Image</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                
+                        <div class="p-6 bg-white">
+                            <h2 class="text-xl font-semibold">{{ item.name }}</h2>
+                            <p class="text-gray-500">Price: ${{ item.price }}</p>
+                            <p class="text-zinc-500">{{ item.location }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+            
+            {# Empty State Message #}
+            {% if items|length == 0 %}
+                <div class="col-span-4 text-center text-gray-500">
+                    <p>You have no items listed.</p>
+                    <p>Add new items <a href="{% url 'item:new' %}" class="text-teal-500 hover:underline">here</a>.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
